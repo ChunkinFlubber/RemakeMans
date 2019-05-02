@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-public class LevelSystem
+public class LevelSystem : MonoBehaviour
 {
     [SerializeField]
     int Level = 1;

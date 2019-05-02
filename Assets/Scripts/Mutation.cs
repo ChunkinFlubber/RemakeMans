@@ -1,18 +1,21 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class Mutation : MonoBehaviour
+public class Mutation
 {
-    // Start is called before the first frame update
-    void Start()
+    public bool TickEnabled = false;
+    public int Stack = 0;
+    virtual public void Tick()
     {
-        
+
     }
 
-    // Update is called once per frame
-    void Update()
+    virtual public void Init(MutationSystem master)
     {
-        
+        //Use master to setup mutation; such as connecting to MaxSpeed and changing it.
+    }
+
+    virtual public void Destroy()
+    {
+
     }
 }

@@ -20,13 +20,17 @@ public class Character : MonoBehaviour
     void Awake()
     {
         InputMan = new MasterInputs();
+
         MovementSettings.GroundChecker = FeetPosition;
-        Movement = new CharacterMovementSystem(MovementSettings, InputMan, GetComponent<CharacterController>(), MyCamera);
+        Movement = GetComponent<CharacterMovementSystem>();
+        Movement.Init(MovementSettings, InputMan, GetComponent<CharacterController>(), MyCamera);
+
+        LevelSys = GetComponent<LevelSystem>();
     }
 
     void Update()
     {
-        Movement.Update();
+        
     }
 
     private void OnDestroy() 

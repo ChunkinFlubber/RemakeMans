@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.Experimental.Input;
 
-public class CharacterMovementSystem
+public class CharacterMovementSystem : MonoBehaviour
 {
     CharacterMovementSettings MovementData;
     MasterInputs Input;
@@ -13,11 +13,14 @@ public class CharacterMovementSystem
     bool hasCheckedGroundThisFrame = false;
 
     public delegate void MovementEvent();
+    public delegate void MutationEvent(ref float mutValue);
 
     public MovementEvent Jumped = delegate{};
     public MovementEvent Landed = delegate{};
 
-    public CharacterMovementSystem(CharacterMovementSettings data, MasterInputs input, CharacterController controller, Camera cam)
+    public MutationEvent MutateMoveSpeed = delegate{};
+
+    public void Init(CharacterMovementSettings data, MasterInputs input, CharacterController controller, Camera cam)
     {
         Input = input;
         MovementData = data;
@@ -43,7 +46,7 @@ public class CharacterMovementSystem
     }
 
 
-    public void Update()
+    private void Update()
     {
         InputMovementTick();
         OtherMovementTick();
@@ -64,6 +67,8 @@ public class CharacterMovementSystem
         Heading *= MovementData.Acceleration * Time.deltaTime;
 
         MovementData.InputVelocity += Heading;
+
+        MutateMoveSpeed(ref MoveSpeed);
 
         MovementData.InputVelocity = Vector3.ClampMagnitude(MovementData.InputVelocity, MoveSpeed);
 
@@ -152,7 +157,7 @@ public class CharacterMovementSystem
         return isGrounded;
     }
 
-    ~CharacterMovementSystem()
+    private void OnDestroy()
     {
         Input.Character.Movement.performed -= MoveInput;
         Input.Character.Movement.cancelled -= MoveInput;
