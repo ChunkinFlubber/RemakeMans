@@ -54,8 +54,6 @@ public class CharacterMovementSettings : ScriptableObject
     public Vector3 Velocity = Vector3.zero;
     [HideInInspector]
     public Vector3 InputVelocity = Vector3.zero;
-    [HideInInspector]
-    public Transform GroundChecker = null;
 
     [SerializeField]
     public LayerMask Ground;

@@ -356,6 +356,9 @@ GameObject:
   - component: {fileID: 8473629014238467618}
   - component: {fileID: 934321924942122437}
   - component: {fileID: 4175908956833353985}
+  - component: {fileID: 531489715052788183}
+  - component: {fileID: 823993285611545593}
+  - component: {fileID: 2073061373524356995}
   m_Layer: 0
   m_Name: Character
   m_TagString: Player
@@ -413,6 +416,48 @@ MonoBehaviour:
   MovementSettings: {fileID: 11400000, guid: e8f213ab9923c1848af603cc66a16cce, type: 2}
   MyCamera: {fileID: 8666707591746821278}
   FeetPosition: {fileID: 3710861013646233241}
+--- !u!114 &531489715052788183
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8473629014238467629}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a9c540ff9490f640b359e5296506a52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MovementData: {fileID: 11400000, guid: e8f213ab9923c1848af603cc66a16cce, type: 2}
+  GroundChecker: {fileID: 3710861013646233241}
+--- !u!114 &823993285611545593
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8473629014238467629}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40c608c35090c204ea20d07f5b8d4be6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2073061373524356995
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8473629014238467629}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0a0fdddbd2998b469e3acb07000e39f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Level: 1
+  CurrentXP: 0
+  NextLevelXP: 100
+  NextXPMultiplier: 1.3
 --- !u!1 &9023050716308310612
 GameObject:
   m_ObjectHideFlags: 0

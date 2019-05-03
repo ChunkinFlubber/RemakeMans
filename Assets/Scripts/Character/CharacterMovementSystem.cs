@@ -4,10 +4,13 @@ using UnityEngine.Experimental.Input;
 
 public class CharacterMovementSystem : MonoBehaviour
 {
-    CharacterMovementSettings MovementData;
+    [SerializeField]
+    CharacterMovementSettings MovementData = null;
     MasterInputs Input;
     CharacterController Controller;
     Camera Cam;
+    [SerializeField]
+    public Transform GroundChecker = null;
     bool isGrounded = false;
     bool prevGrounded = false;
     bool hasCheckedGroundThisFrame = false;
@@ -20,10 +23,9 @@ public class CharacterMovementSystem : MonoBehaviour
 
     public MutationEvent MutateMoveSpeed = delegate{};
 
-    public void Init(CharacterMovementSettings data, MasterInputs input, CharacterController controller, Camera cam)
+    public void Init(MasterInputs input, CharacterController controller, Camera cam)
     {
         Input = input;
-        MovementData = data;
         Controller = controller;
         Cam = cam;
 
@@ -148,7 +150,7 @@ public class CharacterMovementSystem : MonoBehaviour
         {
             prevGrounded = isGrounded;
         }
-        isGrounded = Physics.CheckSphere(MovementData.GroundChecker.position, MovementData.GroundDistance, MovementData.Ground, QueryTriggerInteraction.Ignore);
+        isGrounded = Physics.CheckSphere(GroundChecker.position, MovementData.GroundDistance, MovementData.Ground, QueryTriggerInteraction.Ignore);
         hasCheckedGroundThisFrame = true;
         if(!prevGrounded && isGrounded)
         {

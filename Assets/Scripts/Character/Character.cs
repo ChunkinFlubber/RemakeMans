@@ -3,29 +3,30 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
+[RequireComponent(typeof(CharacterMovementSystem))]
+[RequireComponent(typeof(LevelSystem))]
+[RequireComponent(typeof(MutationSystem))]
 public class Character : MonoBehaviour
 {
     [Header("Setup")]
     [SerializeField]
-    CharacterMovementSettings MovementSettings = null;
-    [SerializeField]
     Camera MyCamera = null;
-    [SerializeField]
-    Transform FeetPosition = null;
 
     MasterInputs InputMan;
     CharacterMovementSystem Movement;
     LevelSystem LevelSys;
+    MutationSystem MutSys;
 
     void Awake()
     {
         InputMan = new MasterInputs();
 
-        MovementSettings.GroundChecker = FeetPosition;
         Movement = GetComponent<CharacterMovementSystem>();
-        Movement.Init(MovementSettings, InputMan, GetComponent<CharacterController>(), MyCamera);
+        Movement.Init(InputMan, GetComponent<CharacterController>(), MyCamera);
 
         LevelSys = GetComponent<LevelSystem>();
+
+        MutSys = GetComponent<MutationSystem>();
     }
 
     void Update()
