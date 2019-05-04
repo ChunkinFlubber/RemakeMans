@@ -8,8 +8,9 @@ public class CharacterMovementSettings : ScriptableObject
     float _BaseMoveSpeed = 10.0f;
     public float BaseMoveSpeed { get => _BaseMoveSpeed; }
     [SerializeField]
-    float _Acceleration = 58.0f;
-    public float Acceleration { get => _Acceleration; }
+    [Tooltip("Multiplied by Movespeed for adjusable acceleration")]
+    float _Acceleration = 6.0f;
+    public float Acceleration { get => _Acceleration * MoveSpeed; }
     [SerializeField]
     float _BaseJumpHeight = 3.0f;
     float BaseJumpHeight { get => _BaseJumpHeight; }
@@ -17,24 +18,21 @@ public class CharacterMovementSettings : ScriptableObject
     int _BaseJumpCount = 1;
     int BaseJumpCount { get => _BaseJumpCount; }
 
+    public float MoveSpeedMutated = 10.0f;
+    public float JumpHeightMutated = 3.0f;
+    public int JumpCoundMutated = 1;
+
+    public float MoveSpeed { get{ return MoveSpeedMutated; } }
+    public float JumpHeight {  get{ return JumpHeightMutated; } }
+    public float JumpCount {  get{ return JumpCoundMutated; } }
+
+    [Header("LevelUp Adjustments")]
     [SerializeField]
     float _MoveSpeedAdjust = 1.3f;
     [SerializeField]
     float _JumpHeightAdjust = 1.0f;
     [SerializeField]
     int _JumpCountAdjust = 0;
-
-    float MoveSpeedMod = 1;
-    float JumpHeightMod = 1;
-    int JumpCoundMod = 0;
-
-    public float MoveSpeed { get{ return MoveSpeedMod * BaseMoveSpeed; } }
-    public float JumpHeight {  get{ return JumpHeightMod * BaseJumpHeight; } }
-    public float JumpCount {  get{ return JumpCoundMod + BaseJumpCount; } }
-
-    [SerializeField]
-    float _AirControl = 0.2f;
-    public float AirControl {get { return _AirControl; } }
 
     [Header("Physics")]
     [SerializeField]
@@ -46,7 +44,9 @@ public class CharacterMovementSettings : ScriptableObject
     [SerializeField]
     Vector3 _Friction = Vector3.zero;
     public Vector3 Friction {get { return _Friction; } }
-
+    [SerializeField]
+    float _AirControl = 0.2f;
+    public float AirControl {get { return _AirControl; } }
 
     [HideInInspector]
     public Vector3 InputMoveVector = Vector3.zero;
@@ -63,7 +63,14 @@ public class CharacterMovementSettings : ScriptableObject
     [SerializeField]
     float _Sens = 2.5f;
     public float Sens { get => _Sens; set => _Sens = value; }
-    public Vector2 MouseLook;
+    public Vector2 MouseLook = Vector2.zero;
+
+    public void Setup()
+    {
+        MoveSpeedMutated = BaseMoveSpeed;
+        JumpHeightMutated = BaseJumpHeight;
+        JumpCoundMutated = BaseJumpCount;
+    }
 
     public void HandleLevelUp()
     {

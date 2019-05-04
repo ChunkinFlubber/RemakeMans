@@ -22,11 +22,15 @@ public class Character : MonoBehaviour
         InputMan = new MasterInputs();
 
         Movement = GetComponent<CharacterMovementSystem>();
-        Movement.Init(InputMan, GetComponent<CharacterController>(), MyCamera);
 
         LevelSys = GetComponent<LevelSystem>();
 
         MutSys = GetComponent<MutationSystem>();
+    }
+
+    void Start()
+    {
+        Movement.Init(InputMan, GetComponent<CharacterController>(), MyCamera);
     }
 
     void Update()

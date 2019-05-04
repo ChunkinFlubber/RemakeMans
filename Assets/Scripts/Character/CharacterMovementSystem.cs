@@ -5,7 +5,7 @@ using UnityEngine.Experimental.Input;
 public class CharacterMovementSystem : MonoBehaviour
 {
     [SerializeField]
-    CharacterMovementSettings MovementData = null;
+    public CharacterMovementSettings MovementData = null;
     MasterInputs Input;
     CharacterController Controller;
     Camera Cam;
@@ -22,12 +22,15 @@ public class CharacterMovementSystem : MonoBehaviour
     public MovementEvent Landed = delegate{};
 
     public MutationEvent MutateMoveSpeed = delegate{};
+    public MutationEvent MutateJumpHeight = delegate{};
 
     public void Init(MasterInputs input, CharacterController controller, Camera cam)
     {
         Input = input;
         Controller = controller;
         Cam = cam;
+
+        MovementData.Setup();
 
         MovementData.Velocity = Vector3.zero;
 
@@ -70,8 +73,6 @@ public class CharacterMovementSystem : MonoBehaviour
 
         MovementData.InputVelocity += Heading;
 
-        MutateMoveSpeed(ref MoveSpeed);
-
         MovementData.InputVelocity = Vector3.ClampMagnitude(MovementData.InputVelocity, MoveSpeed);
 
         Controller.Move(MovementData.InputVelocity * Time.deltaTime);
@@ -96,6 +97,10 @@ public class CharacterMovementSystem : MonoBehaviour
 
     public void LookAround(InputAction.CallbackContext context)
     {
+        if(!Application.isFocused)
+        {
+            return;
+        }
         Vector2 delta = context.ReadValue<Vector2>();
         delta *= 0.01f;
         MovementData.MouseLook += delta * MovementData.Sens;
@@ -108,7 +113,8 @@ public class CharacterMovementSystem : MonoBehaviour
     {
         if(CheckGorund() && MovementData.Velocity.y <= 0.0f)
         {
-            MovementData.Velocity.y = Mathf.Sqrt(MovementData.JumpHeight * -2f * MovementData.Gravity);
+            float jumpHeight = MovementData.JumpHeight;
+            MovementData.Velocity.y = Mathf.Sqrt(jumpHeight * -2f * MovementData.Gravity);
             Jumped();
             isGrounded = false;
         }
@@ -142,7 +148,7 @@ public class CharacterMovementSystem : MonoBehaviour
 
     private bool CheckGorund()
     {
-        if(hasCheckedGroundThisFrame)
+        if (hasCheckedGroundThisFrame)
         {
             return isGrounded;
         }
@@ -150,13 +156,29 @@ public class CharacterMovementSystem : MonoBehaviour
         {
             prevGrounded = isGrounded;
         }
-        isGrounded = Physics.CheckSphere(GroundChecker.position, MovementData.GroundDistance, MovementData.Ground, QueryTriggerInteraction.Ignore);
+        isGrounded = FindGround();
         hasCheckedGroundThisFrame = true;
-        if(!prevGrounded && isGrounded)
+        if (!prevGrounded && isGrounded)
         {
             Landed();
         }
         return isGrounded;
+    }
+
+    private bool FindGround()
+    {
+        bool hit = Physics.CheckSphere(GroundChecker.position, MovementData.GroundDistance, MovementData.Ground, QueryTriggerInteraction.Ignore);
+        if (hit)
+        {
+            RaycastHit rhit;
+            Ray ray = new Ray(GroundChecker.position, new Vector3(0, -MovementData.GroundDistance, 0));
+            Physics.Raycast(ray, out rhit);
+            if (Vector3.Dot(Vector3.up, rhit.normal) > 0.2f)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     private void OnDestroy()
