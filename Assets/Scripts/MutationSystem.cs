@@ -13,6 +13,7 @@ public class MutationSystem : MonoBehaviour
     public Character MyCharacter { get; private set; }
     public CharacterMovementSystem MoveSystem { get; private set; }
     public LevelSystem Levels { get; private set; }
+    public Weapon WeapSys { get; private set; }
 
     void Start()
     {
@@ -23,6 +24,8 @@ public class MutationSystem : MonoBehaviour
         MyCharacter = GetComponent<Character>();
         MoveSystem = GetComponent<CharacterMovementSystem>();
         Levels = GetComponent<LevelSystem>();
+        WeapSys = GetComponent<Weapon>();
+
         Mutations = new Dictionary<Type, Mutation>();
     }
 
@@ -57,7 +60,6 @@ public class MutationSystem : MonoBehaviour
                 }
             }
         }
-        Debug.Log(e.gameObject.name);
     }
 
     void OnDestroy()

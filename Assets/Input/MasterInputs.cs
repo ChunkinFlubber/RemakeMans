@@ -44,7 +44,7 @@ public class MasterInputs : IInputActionCollection
                 {
                     ""name"": ""Fire"",
                     ""id"": ""271e25ea-4b4c-4619-a9ea-f3b57d5008af"",
-                    ""expectedControlLayout"": ""Button"",
+                    ""expectedControlLayout"": """",
                     ""continuous"": false,
                     ""passThrough"": false,
                     ""initialStateCheck"": true,
@@ -66,8 +66,8 @@ public class MasterInputs : IInputActionCollection
                 {
                     ""name"": ""Look"",
                     ""id"": ""47d58db3-c246-452c-ba51-69bdd6c1bf5f"",
-                    ""expectedControlLayout"": ""Vector2"",
-                    ""continuous"": false,
+                    ""expectedControlLayout"": """",
+                    ""continuous"": true,
                     ""passThrough"": false,
                     ""initialStateCheck"": false,
                     ""processors"": """",
@@ -102,7 +102,7 @@ public class MasterInputs : IInputActionCollection
                 {
                     ""name"": ""wasd"",
                     ""id"": ""57676225-6e04-4555-83ee-a2934646fafa"",
-                    ""path"": ""2DVector"",
+                    ""path"": ""2DVector(normalize=false)"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -163,7 +163,7 @@ public class MasterInputs : IInputActionCollection
                     ""name"": """",
                     ""id"": ""15c12795-0de6-4051-a628-dd206eb61c4d"",
                     ""path"": ""<Mouse>/leftButton"",
-                    ""interactions"": """",
+                    ""interactions"": ""Press(behavior=2)"",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Fire"",

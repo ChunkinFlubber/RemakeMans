@@ -13,24 +13,28 @@ public class Character : MonoBehaviour
     Camera MyCamera = null;
 
     MasterInputs InputMan;
-    CharacterMovementSystem Movement;
+    CharacterMovementSystem MovementSys;
     LevelSystem LevelSys;
     MutationSystem MutSys;
+    Weapon WeaponSys;
 
     void Awake()
     {
         InputMan = new MasterInputs();
 
-        Movement = GetComponent<CharacterMovementSystem>();
+        MovementSys = GetComponent<CharacterMovementSystem>();
 
         LevelSys = GetComponent<LevelSystem>();
 
         MutSys = GetComponent<MutationSystem>();
+
+        WeaponSys = GetComponent<Weapon>();
     }
 
     void Start()
     {
-        Movement.Init(InputMan, GetComponent<CharacterController>(), MyCamera);
+        MovementSys.Init(InputMan, GetComponent<CharacterController>(), MyCamera);
+        WeaponSys.Init(InputMan);
     }
 
     void Update()
