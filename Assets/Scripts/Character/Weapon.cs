@@ -34,7 +34,6 @@ public class Weapon : MonoBehaviour
     public void Fire(InputAction.CallbackContext context)
 	{
 		isFiring = !isFiring;
-		Debug.Log(isFiring);
 	}
 
 	private void Update()
