@@ -4,9 +4,24 @@ using UnityEngine;
 
 public class BulletBehavior : MonoBehaviour
 {
-    // Update is called once per frame
-    void Update()
-    {
-        transform.localPosition = new Vector3(Mathf.Sin(Time.time * Random.Range(-10,10)), Mathf.Sin(Time.time * Random.Range(-10,10)), 0) * Time.deltaTime * Random.Range(-10,10);
+	[SerializeField]
+	float waitTime = 0.2f;
+	float time = 0.0f;
+	void Update()
+	{
+		time += Time.deltaTime;
+		if (time >= waitTime)
+		{
+			float randomSinX = Mathf.Sin(Time.time * Random.Range(-10, 10));
+			float randomSinY = Mathf.Sin(Time.time * Random.Range(-10, 10));
+			Vector3 rndSinVec = new Vector3(randomSinX, randomSinY, 0);
+			transform.localPosition = rndSinVec * Time.deltaTime * Random.Range(-20, 20);
+		}
     }
+
+	private void OnEnable()
+	{
+		time = 0.0f;
+		transform.localPosition = Vector3.zero;
+	}
 }

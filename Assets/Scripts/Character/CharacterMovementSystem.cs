@@ -5,7 +5,7 @@ using UnityEngine.Experimental.Input;
 public class CharacterMovementSystem : MonoBehaviour
 {
     [SerializeField]
-    public CharacterMovementSettings MovementData = null;
+    public CharacterMovementSettings MovementData;
     MasterInputs Input;
     CharacterController Controller;
     Camera Cam;
@@ -50,7 +50,6 @@ public class CharacterMovementSystem : MonoBehaviour
         Input.Character.Look.performed += LookAround;
     }
 
-
     private void Update()
     {
         InputMovementTick();
@@ -94,19 +93,15 @@ public class CharacterMovementSystem : MonoBehaviour
         }
     }
 
-
     public void LookAround(InputAction.CallbackContext context)
     {
-        if(!Application.isFocused)
-        {
-            return;
-        }
         Vector2 delta = context.ReadValue<Vector2>();
         delta *= 0.01f;
         MovementData.MouseLook += delta * MovementData.Sens;
         MovementData.MouseLook.y = Mathf.Clamp(MovementData.MouseLook.y, -89.9f, 89.9f);
         Controller.transform.localRotation = Quaternion.AngleAxis(MovementData.MouseLook.x, Controller.transform.up);
         Cam.transform.localRotation = Quaternion.AngleAxis(-MovementData.MouseLook.y, Vector3.right);
+		DebugUIScript.Instance.SetText(MovementData.MouseLook.ToString());
     }
 
     public void Jump(InputAction.CallbackContext context)
@@ -126,7 +121,7 @@ public class CharacterMovementSystem : MonoBehaviour
         MovementData.InputMoveVector.x = axis.x;
         MovementData.InputMoveVector.z = axis.y;
     }
-    //Used for movement
+
     public void AddMoveVector(Vector3 movement)
     {
         MovementData.InputMoveVector = movement;

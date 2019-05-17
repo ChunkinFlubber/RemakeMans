@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: ROFMutation
   m_EditorClassIdentifier: 
   TickEnabled: 0
-  ROFMultiplyer: 7.67
+  ROFMultiplyer: 9
   AdditionalPerStack: 0.25

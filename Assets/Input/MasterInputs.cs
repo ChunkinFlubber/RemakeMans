@@ -66,10 +66,10 @@ public class MasterInputs : IInputActionCollection
                 {
                     ""name"": ""Look"",
                     ""id"": ""47d58db3-c246-452c-ba51-69bdd6c1bf5f"",
-                    ""expectedControlLayout"": """",
-                    ""continuous"": true,
+                    ""expectedControlLayout"": ""Vector2"",
+                    ""continuous"": false,
                     ""passThrough"": false,
-                    ""initialStateCheck"": false,
+                    ""initialStateCheck"": true,
                     ""processors"": """",
                     ""interactions"": """",
                     ""bindings"": []
@@ -163,7 +163,7 @@ public class MasterInputs : IInputActionCollection
                     ""name"": """",
                     ""id"": ""15c12795-0de6-4051-a628-dd206eb61c4d"",
                     ""path"": ""<Mouse>/leftButton"",
-                    ""interactions"": ""Press(behavior=2)"",
+                    ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Fire"",

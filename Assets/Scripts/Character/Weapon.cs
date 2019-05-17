@@ -12,6 +12,10 @@ public class Weapon : MonoBehaviour
     [SerializeField]
     Transform MuzzleTransform = null;
 
+	public delegate void FireEvent(Projectile projectile);
+
+	public FireEvent Fired = delegate { };
+
 	bool isFiring = false;
 	float roundsDelta = 0;
 	float currDelta = 0;
@@ -43,20 +47,20 @@ public class Weapon : MonoBehaviour
 		{
 			if(currDelta >= roundsDelta)
 			{
-				SpawnProjectile();
+				Projectile projectile = SpawnProjectile();
 				currDelta = 0;
+				Fired(projectile);
 			}
 		}
 	}
 
-	private void SpawnProjectile()
+	private Projectile SpawnProjectile()
 	{
-		//Spawns Projectiles
 		Projectile projectile = ProjectilePool.Instance.Get();
 		projectile.gameObject.SetActive(true);
 		projectile.transform.position = MuzzleTransform.position;
 		projectile.transform.rotation = MuzzleTransform.rotation;
-		projectile.Setup(MuzzleTransform.forward, ProjectileSpeed);
+		projectile.Setup(gameObject, MuzzleTransform.forward, ProjectileSpeed);
+		return projectile;
 	}
-	//Spawns Particles
 }
