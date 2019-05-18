@@ -3,32 +3,44 @@
 public class HealthSystem : MonoBehaviour
 {
     [SerializeField]
-    float MaxHealth = 100;
-    float CurrentHealth = 0;
+    int MaxHealth = 100;
+    int CurrentHealth = 0;
 
-    public delegate void HealthChange(float change);
-    public HealthChange OnHealthChange = delegate{};
-    public HealthChange OnDamage = delegate{};
-    public HealthChange OnHeal = delegate{};
-    public HealthChange OnHealthChangePct = delegate{};
+	[SerializeField]
+	bool isDamagable = true;
+	[SerializeField]
+	bool canDie = true;
 
-    void OnEnable()
+	public delegate void HealthEvent(float change);
+    public HealthEvent OnHealthChange = delegate{};
+    public HealthEvent OnDamage = delegate{};
+    public HealthEvent OnHeal = delegate{};
+    public HealthEvent OnHealthChangePct = delegate{};
+    public HealthEvent OnDeath = delegate{};
+
+	void OnEnable()
     {
         CurrentHealth = MaxHealth;
     }
 
     public void ModifyHealth(int amount)
     {
-        CurrentHealth += amount;
-        if(amount < 0)
-        {
-            OnDamage((float)amount);
-        }
-        else
-        {
-            OnHeal((float)amount);
-        }
-        OnHealthChange((float)amount);
-        OnHealthChangePct((float)CurrentHealth / (float)MaxHealth);
+		if (!isDamagable) return;
+		CurrentHealth += amount;
+		if (amount < 0)
+		{
+			OnDamage(amount);
+		}
+		else
+		{
+			OnHeal(amount);
+		}
+		OnHealthChange(amount);
+		OnHealthChangePct((float)CurrentHealth / MaxHealth);
+		if(CurrentHealth <= 0 && canDie)
+		{
+			CurrentHealth = 0;
+			OnDeath(CurrentHealth);
+		}
     }
 }
