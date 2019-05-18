@@ -14,6 +14,7 @@ public class CharacterMovementSystem : MonoBehaviour
     bool isGrounded = false;
     bool prevGrounded = false;
     bool hasCheckedGroundThisFrame = false;
+	int CurrentJumpCount = 0;
 
     public delegate void MovementEvent();
     public delegate void MutationEvent(ref float mutValue);
@@ -106,12 +107,13 @@ public class CharacterMovementSystem : MonoBehaviour
 
     public void Jump(InputAction.CallbackContext context)
     {
-        if(CheckGorund() && MovementData.Velocity.y <= 0.0f)
+        if((CheckGorund() && MovementData.Velocity.y <= 0.0f) || (CurrentJumpCount < MovementData.JumpCount - 1))
         {
             float jumpHeight = MovementData.JumpHeight;
             MovementData.Velocity.y = Mathf.Sqrt(jumpHeight * -2f * MovementData.Gravity);
             Jumped();
             isGrounded = false;
+			++CurrentJumpCount;
         }
     }
 
@@ -156,6 +158,7 @@ public class CharacterMovementSystem : MonoBehaviour
         if (!prevGrounded && isGrounded)
         {
             Landed();
+			CurrentJumpCount = 0;
         }
         return isGrounded;
     }

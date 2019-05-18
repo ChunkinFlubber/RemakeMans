@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: SpeedMutation
   m_EditorClassIdentifier: 
   TickEnabled: 0
-  SpeedMultiplyer: 1.25
+  SpeedMultiplyer: 3.25
   AdditionalPerStack: 0.25

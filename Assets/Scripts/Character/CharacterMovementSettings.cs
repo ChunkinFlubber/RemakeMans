@@ -13,18 +13,18 @@ public class CharacterMovementSettings : ScriptableObject
     public float Acceleration { get => _Acceleration * MoveSpeed; }
     [SerializeField]
     float _BaseJumpHeight = 3.0f;
-    float BaseJumpHeight { get => _BaseJumpHeight; }
+	public float BaseJumpHeight { get => _BaseJumpHeight; }
     [SerializeField]
     int _BaseJumpCount = 1;
-    int BaseJumpCount { get => _BaseJumpCount; }
+	public int BaseJumpCount { get => _BaseJumpCount; }
 
     public float MoveSpeedMutated = 10.0f;
     public float JumpHeightMutated = 3.0f;
-    public int JumpCoundMutated = 1;
+    public int JumpCountMutated = 1;
 
     public float MoveSpeed { get{ return MoveSpeedMutated; } }
     public float JumpHeight {  get{ return JumpHeightMutated; } }
-    public float JumpCount {  get{ return JumpCoundMutated; } }
+    public float JumpCount {  get{ return JumpCountMutated; } }
 
     [Header("LevelUp Adjustments")]
     [SerializeField]
@@ -69,7 +69,7 @@ public class CharacterMovementSettings : ScriptableObject
     {
         MoveSpeedMutated = BaseMoveSpeed;
         JumpHeightMutated = BaseJumpHeight;
-        JumpCoundMutated = BaseJumpCount;
+        JumpCountMutated = BaseJumpCount;
     }
 
     public void HandleLevelUp()

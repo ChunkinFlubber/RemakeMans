@@ -2,7 +2,9 @@
 
 public class Projectile : MonoBehaviour
 {
-    [SerializeField]
+	[SerializeField]
+	int Damage = 10;
+	[SerializeField]
     float LifeTime;
     float CurrLifeTime;
     float Speed;
@@ -45,11 +47,16 @@ public class Projectile : MonoBehaviour
 		gameObject.SetActive(false);
 	}
 
-	private void OnCollisionEnter(Collision collision)
+	private void OnTriggerEnter(Collider collider)
 	{
-		if(collision.collider.gameObject != Shooter)
+		HealthSystem HS = collider.gameObject.GetComponent<HealthSystem>();
+		if(collider.gameObject != Shooter)
 		{
-			Debug.Log(collision.collider.gameObject);
+			if(HS)
+			{
+				HS.ModifyHealth(Damage);
+			}
+			Debug.Log(collider.gameObject);
 			ReturnMe();
 		}
 	}
