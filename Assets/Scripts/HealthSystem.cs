@@ -43,4 +43,13 @@ public class HealthSystem : MonoBehaviour
 			OnDeath(CurrentHealth);
 		}
     }
+
+	public void ModifyHealth(int amount, DamageType type, Vector3 position, bool crit)
+	{
+		ModifyHealth(amount);
+
+		DamagePopUp dp = DamagePopUpPool.Instance.Get();
+		dp.transform.position = position;
+		dp.SetDamage(crit, amount, type?.DamageColor);
+	}
 }

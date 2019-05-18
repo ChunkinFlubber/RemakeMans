@@ -4,5 +4,6 @@ using UnityEngine;
 
 public class DamageType : MonoBehaviour
 {
-	public readonly Color DamageColor = Color.white;
+	[SerializeField]
+	public Color DamageColor = Color.white;
 }

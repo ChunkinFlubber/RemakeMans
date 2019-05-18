@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1335193979468046001}
   - component: {fileID: 1335193979468046014}
   - component: {fileID: 1335193979468046015}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: BulletModel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -88,7 +88,7 @@ GameObject:
   - component: {fileID: 1335193979505519477}
   - component: {fileID: 5133754540211269587}
   - component: {fileID: 801818023894125087}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Art
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -239,7 +239,8 @@ GameObject:
   - component: {fileID: 1335193980837473520}
   - component: {fileID: 1335193980837473521}
   - component: {fileID: 1763843103316619703}
-  m_Layer: 0
+  - component: {fileID: -3463911204917098229}
+  m_Layer: 10
   m_Name: Bullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -304,3 +305,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LifeTime: 10
+  Damage: 10
+  CritMultiplier: 2
+--- !u!114 &-3463911204917098229
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1335193980837473522}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e55619359dbeb649afe8f4dc0a597f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DamageColor: {r: 0.1254902, g: 0.90196085, b: 1, a: 1}
