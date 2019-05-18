@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ProjectilePool : MonoBehaviour
 {
-    public static ProjectilePool Instance { get; private set; }
+    //public static ProjectilePool Instance { get; private set; }
 
     [SerializeField]
     private Projectile prefab;
@@ -13,22 +13,23 @@ public class ProjectilePool : MonoBehaviour
 
     private void Awake()
     {
-        Instance = this;
+        //Instance = this;
     }
 
     public Projectile Get()
     {
         if (projectileAvailable.Count == 0)
         {
-            return AddBall();
+            return AddObject();
         }
 
         return projectileAvailable.Dequeue();
     }
 
-    private Projectile AddBall()
+    private Projectile AddObject()
     {
-        var projectile = Instantiate(prefab);
+		Projectile projectile = Instantiate(prefab);
+		projectile.Init(this);
         return projectile;
     }
 
