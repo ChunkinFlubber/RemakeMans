@@ -5,6 +5,9 @@ public class Weapon : MonoBehaviour
 {
     MasterInputs Input;
 	[SerializeField]
+	ProjectilePool ProPool = null;
+
+	[SerializeField]
 	private float _ROF = 1.35f;
 	public float ROF { get => _ROF; set { _ROF = value; roundsDelta = 1 / _ROF; } }
 	[SerializeField]
@@ -24,6 +27,10 @@ public class Weapon : MonoBehaviour
 	{
 		roundsDelta = 1 / ROF;
 		currDelta = roundsDelta + 1f;
+		if(ProPool == null)
+		{
+			ProPool = GetComponent<ProjectilePool>();
+		}
 	}
 
 	//Handles Input
@@ -56,7 +63,7 @@ public class Weapon : MonoBehaviour
 
 	private Projectile SpawnProjectile()
 	{
-		Projectile projectile = ProjectilePool.Instance.Get();
+		Projectile projectile = ProPool.Get();
 		projectile.gameObject.SetActive(true);
 		projectile.transform.position = MuzzleTransform.position;
 		projectile.transform.rotation = MuzzleTransform.rotation;

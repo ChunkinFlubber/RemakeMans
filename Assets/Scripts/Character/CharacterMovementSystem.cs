@@ -102,7 +102,6 @@ public class CharacterMovementSystem : MonoBehaviour
         MovementData.MouseLook.y = Mathf.Clamp(MovementData.MouseLook.y, -89.9f, 89.9f);
         Controller.transform.localRotation = Quaternion.AngleAxis(MovementData.MouseLook.x, Controller.transform.up);
         Cam.transform.localRotation = Quaternion.AngleAxis(-MovementData.MouseLook.y, Vector3.right);
-		DebugUIScript.Instance.SetText(MovementData.MouseLook.ToString());
     }
 
     public void Jump(InputAction.CallbackContext context)
