@@ -1,4 +1,17 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
+
+struct ResistanceValue
+{
+	public DamageType Type;
+	public float RValue;
+
+	public ResistanceValue(DamageType type, float rValue)
+	{
+		Type = type;
+		RValue = rValue;
+	}
+}
 
 public class HealthSystem : MonoBehaviour
 {
@@ -11,12 +24,26 @@ public class HealthSystem : MonoBehaviour
 	[SerializeField]
 	bool canDie = true;
 
+	[SerializeField]
+	ResistanceValue[] StartingResistanceValues = null;
+
+	Dictionary<DamageType,float> Resistances = null;
+
 	public delegate void HealthEvent(float change);
     public HealthEvent OnHealthChange = delegate{};
     public HealthEvent OnDamage = delegate{};
     public HealthEvent OnHeal = delegate{};
     public HealthEvent OnHealthChangePct = delegate{};
     public HealthEvent OnDeath = delegate{};
+
+	private void Awake()
+	{
+		Resistances = new Dictionary<DamageType, float>(StartingResistanceValues.Length);
+		foreach (ResistanceValue resistanceValues in StartingResistanceValues)
+		{
+			Resistances.Add(resistanceValues.Type, resistanceValues.RValue);
+		}
+	}
 
 	void OnEnable()
     {
@@ -46,6 +73,8 @@ public class HealthSystem : MonoBehaviour
 
 	public void ModifyHealth(int amount, DamageType type, Vector3 position, bool crit)
 	{
+		amount = (int)Mathf.Ceil((1.0f - Resistances[type]) * amount);
+
 		ModifyHealth(amount);
 
 		DamagePopUp dp = DamagePopUpPool.Instance.Get();
