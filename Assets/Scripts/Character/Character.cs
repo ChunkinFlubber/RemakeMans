@@ -1,11 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-[RequireComponent(typeof(CharacterController))]
 [RequireComponent(typeof(CharacterMovementSystem))]
 [RequireComponent(typeof(LevelSystem))]
 [RequireComponent(typeof(MutationSystem))]
+//[RequireComponent(typeof(HealthSystem))]
 public class Character : MonoBehaviour
 {
     [Header("Setup")]
@@ -16,7 +14,7 @@ public class Character : MonoBehaviour
     CharacterMovementSystem MovementSys;
     LevelSystem LevelSys;
     MutationSystem MutSys;
-    Weapon WeaponSys;
+    WeaponSlot WeaponSlot;
 
     void Awake()
     {
@@ -28,13 +26,13 @@ public class Character : MonoBehaviour
 
         MutSys = GetComponent<MutationSystem>();
 
-        WeaponSys = GetComponent<Weapon>();
+        WeaponSlot = GetComponent<WeaponSlot>();
     }
 
     void Start()
     {
         MovementSys.Init(InputMan, GetComponent<CharacterController>(), MyCamera);
-        WeaponSys.Init(InputMan);
+        WeaponSlot.Init(InputMan);
     }
 
     void Update()

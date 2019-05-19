@@ -3,7 +3,6 @@ using UnityEngine.Experimental.Input;
 
 public class Weapon : MonoBehaviour
 {
-    MasterInputs Input;
 	[SerializeField]
 	ProjectilePool ProPool = null;
 
@@ -33,18 +32,9 @@ public class Weapon : MonoBehaviour
 		}
 	}
 
-	//Handles Input
-	public void Init(MasterInputs input)
-    {
-        Input = input;
-        Input.Character.Fire.Enable();
-        Input.Character.Fire.performed += Fire;
-        Input.Character.Fire.cancelled += Fire;
-	}
-
-    public void Fire(InputAction.CallbackContext context)
+    public void SetFire(bool firing)
 	{
-		isFiring = !isFiring;
+		isFiring = firing;
 	}
 
 	private void Update()
