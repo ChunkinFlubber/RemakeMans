@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEngine.Experimental.Input;
 
+[RequireComponent(typeof(CharacterController))]
 public class CharacterMovementSystem : MonoBehaviour
 {
     [SerializeField]
