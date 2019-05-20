@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.Experimental.Input;
 
 public class Weapon : MonoBehaviour
 {
@@ -8,7 +7,7 @@ public class Weapon : MonoBehaviour
 
 	[SerializeField]
 	private float _ROF = 1.35f;
-	public float ROF { get => _ROF; set { _ROF = value; roundsDelta = 1 / _ROF; } }
+	public float ROF { get => _ROF; set { _ROF = value; RoundsDelta = 1 / _ROF; } }
 	[SerializeField]
     float ProjectileSpeed = 10.0f;
     [SerializeField]
@@ -19,13 +18,13 @@ public class Weapon : MonoBehaviour
 	public FireEvent Fired = delegate { };
 
 	bool isFiring = false;
-	float roundsDelta = 0;
-	float currDelta = 0;
+	float RoundsDelta = 0;
+	float CurrentDelta = 0;
 
 	private void Start()
 	{
-		roundsDelta = 1 / ROF;
-		currDelta = roundsDelta + 1f;
+		RoundsDelta = 1 / ROF;
+		CurrentDelta = RoundsDelta + 1f;
 		if(ProPool == null)
 		{
 			ProPool = GetComponent<ProjectilePool>();
@@ -39,13 +38,13 @@ public class Weapon : MonoBehaviour
 
 	private void Update()
 	{
-		currDelta += Time.deltaTime;
+		CurrentDelta += Time.deltaTime;
 		if(isFiring)
 		{
-			if(currDelta >= roundsDelta)
+			if(CurrentDelta >= RoundsDelta)
 			{
 				Projectile projectile = SpawnProjectile();
-				currDelta = 0;
+				CurrentDelta = 0;
 				Fired(projectile);
 			}
 		}
@@ -58,6 +57,13 @@ public class Weapon : MonoBehaviour
 		projectile.transform.position = MuzzleTransform.position;
 		projectile.transform.rotation = MuzzleTransform.rotation;
 		projectile.Setup(gameObject, MuzzleTransform.forward, ProjectileSpeed);
+		projectile.ProjectileReturn += ReturnProjectile;
 		return projectile;
+	}
+
+	public void ReturnProjectile(Projectile projectile)
+	{
+		projectile.ProjectileReturn -= ReturnProjectile;
+		ProPool.ReturnObject(projectile);
 	}
 }

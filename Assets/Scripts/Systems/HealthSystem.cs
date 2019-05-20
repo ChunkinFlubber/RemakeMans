@@ -54,6 +54,7 @@ public class HealthSystem : MonoBehaviour
     {
 		if (!isDamagable) return;
 		CurrentHealth += amount;
+		CurrentHealth = Mathf.Clamp(CurrentHealth, 0, MaxHealth);
 		if (amount < 0)
 		{
 			OnDamage(amount);
@@ -77,7 +78,7 @@ public class HealthSystem : MonoBehaviour
 
 		ModifyHealth(amount);
 
-		DamagePopUp dp = DamagePopUpPool.Instance.Get();
+		DamagePopUp dp = PopUpUIManager.Instance.GetDamagePopUp();
 		dp.transform.position = position;
 		dp.SetDamage(crit, amount, type?.DamageColor);
 	}

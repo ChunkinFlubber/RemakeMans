@@ -2,7 +2,6 @@
 
 public class Projectile : MonoBehaviour
 {
-	ProjectilePool Master = null;
 	DamageType TypeOfDamage = null;
 
 	[SerializeField]
@@ -20,10 +19,11 @@ public class Projectile : MonoBehaviour
     TrailRenderer Trail;
 	GameObject Shooter = null;
 
-	public void Init(ProjectilePool master)
-	{
-		Master = master;
-	}
+	public delegate void ProjectileEvent(GameObject obj);
+	public delegate void ProjectileReturnEvent(Projectile obj);
+
+	public ProjectileEvent ProjectileHit = delegate { };
+	public ProjectileReturnEvent ProjectileReturn = delegate { };
 
 	void Awake()
     {
@@ -39,7 +39,7 @@ public class Projectile : MonoBehaviour
         CurrLifeTime += Time.deltaTime;
         if(CurrLifeTime > LifeTime)
         {
-			ReturnMe();
+			ProjectileReturn(this);
         }
     }
 
@@ -52,13 +52,8 @@ public class Projectile : MonoBehaviour
         CurrLifeTime = 0;
         Trail.Clear();
 		Body.enabled = true;
+		gameObject.SetActive(true);
     }
-
-	private void ReturnMe()
-	{
-		Master.Return(this);
-		gameObject.SetActive(false);
-	}
 
 	private void OnTriggerEnter(Collider collider)
 	{
@@ -71,7 +66,8 @@ public class Projectile : MonoBehaviour
 				HS.ModifyHealth(Damage, TypeOfDamage, transform.position, crit);
 			}
 			Debug.Log(collider.gameObject);
-			ReturnMe();
+			ProjectileHit(collider.gameObject);
+			ProjectileReturn(this);
 		}
 	}
 }

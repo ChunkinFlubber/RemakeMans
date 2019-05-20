@@ -6,17 +6,14 @@ public class DamagePopUp : MonoBehaviour
 	[SerializeField]
 	TextMeshPro TextMesh = null;
 
-	DamagePopUpPool Master = null;
-
 	Vector3 Velocity = Vector3.zero;
 	float Gravity = -10.0f;
 	float MaxTimeOnScreen = 1.15f;
 	float CurrentTimeOnScreen = 0.0f;
 
-	public void Init(DamagePopUpPool master)
-	{
-		Master = master;
-	}
+	public delegate void DamagePopUpEvent(DamagePopUp dp);
+
+	public DamagePopUpEvent DestroyTime = delegate { };
 
 	public void SetDamage(bool isCrit = false, int amount = 10, Color? color = null)
 	{
@@ -53,13 +50,7 @@ public class DamagePopUp : MonoBehaviour
 
 		if(CurrentTimeOnScreen >= MaxTimeOnScreen)
 		{
-			ReturnMe();
+			DestroyTime(this);
 		}
     }
-
-	public void ReturnMe()
-	{
-		Master.Return(this);
-		gameObject.SetActive(false);
-	}
 }
