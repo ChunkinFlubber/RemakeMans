@@ -1,9 +1,8 @@
 ﻿using UnityEngine;
-using UnityEngine.Experimental.Input;
+using UnityEngine.InputSystem;
 
 public class WeaponSlot : MonoBehaviour
 {
-	MasterInputs Input;
 	bool isFiring = false;
 	bool isSlotted = false;
 
@@ -15,23 +14,22 @@ public class WeaponSlot : MonoBehaviour
 	Weapon _SlottedWeapon = null;
 	public Weapon SlottedWeapon { get => _SlottedWeapon; private set { _SlottedWeapon = value; } }
 
+	public delegate void WeaponHandledEvent(bool pickedUp, Weapon weapon);
+	public WeaponHandledEvent WeaponHandled = delegate { };
 
-	public delegate void FireEvent(Projectile projectile);
 
-	public FireEvent Fired = delegate { };
-
-	public void Init(MasterInputs input)
+	private void Start()
 	{
-		Input = input;
-
-		Input.Character.Fire.Enable();
-		Input.Character.Fire.performed += Fire;
-		Input.Character.Fire.cancelled += Fire;
+		
 	}
 
 	public void Fire(InputAction.CallbackContext context)
 	{
 		isFiring = !isFiring;
+		if(SlottedWeapon)
+		{
+			SlottedWeapon.SetFire(isFiring);
+		}
 	}
 
 	public bool SlotWeapon(Weapon weapon)
@@ -39,21 +37,26 @@ public class WeaponSlot : MonoBehaviour
 		if(SlottedWeapon == null)
 		{
 			SlottedWeapon = weapon;
-			//TODO: Replace with lerp to character
-			isSlotted = true;
+			weapon.PickedUp(gameObject);
+			//TODO: Replace with lerp to character or some pick up animation
 			weapon.transform.parent = SlotPosition;
+			weapon.transform.localPosition = Vector3.zero;
+			weapon.transform.localRotation = Quaternion.identity;
+			isSlotted = true;
 			return true;
 		}
 		return false;
 	}
 
-	public void DiscardWeapon(Weapon weapon)
+	public void DiscardWeapon()
 	{
 		if(SlottedWeapon && isSlotted)
 		{
-			isSlotted = false;
-			weapon.transform.parent = null;
+			SlottedWeapon.transform.parent = null;
+			SlottedWeapon.Dropped();
+			SlottedWeapon = null;
 			//TODO: Throw Weapon
+			isSlotted = false;
 		}
 	}
 }

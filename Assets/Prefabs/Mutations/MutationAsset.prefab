@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3671577644331001132}
   - component: {fileID: 6789541734626872471}
   - component: {fileID: 1172597731025205446}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: MutationAsset
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -86,7 +86,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8813159127187173666}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Art
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -118,7 +118,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3626388079170511860}
   - component: {fileID: 6076142930533840180}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Collision
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -163,7 +163,7 @@ GameObject:
   - component: {fileID: 6327616202728149417}
   - component: {fileID: 6112640374408465764}
   - component: {fileID: 4563137834602509736}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: 3D Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}

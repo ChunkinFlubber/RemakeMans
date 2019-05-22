@@ -59,17 +59,6 @@
                     "processors": "",
                     "interactions": "",
                     "bindings": []
-                },
-                {
-                    "name": "Sprint",
-                    "id": "1d8601d1-425c-43ba-8291-3648e8814900",
-                    "expectedControlLayout": "Button",
-                    "continuous": false,
-                    "passThrough": false,
-                    "initialStateCheck": true,
-                    "processors": "",
-                    "interactions": "",
-                    "bindings": []
                 }
             ],
             "bindings": [
@@ -88,7 +77,7 @@
                 {
                     "name": "wasd",
                     "id": "57676225-6e04-4555-83ee-a2934646fafa",
-                    "path": "2DVector(normalize=false)",
+                    "path": "2DVector",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -165,18 +154,6 @@
                     "processors": "",
                     "groups": "",
                     "action": "AltFire",
-                    "isComposite": false,
-                    "isPartOfComposite": false,
-                    "modifiers": ""
-                },
-                {
-                    "name": "",
-                    "id": "b4f228c6-0df6-4d2e-83ef-955acd629bd4",
-                    "path": "<Keyboard>/leftShift",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Sprint",
                     "isComposite": false,
                     "isPartOfComposite": false,
                     "modifiers": ""

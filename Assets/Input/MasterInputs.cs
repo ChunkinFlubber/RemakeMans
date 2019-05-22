@@ -4,8 +4,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Experimental.Input;
-using UnityEngine.Experimental.Input.Utilities;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Utilities;
 
 public class MasterInputs : IInputActionCollection
 {
@@ -73,17 +73,6 @@ public class MasterInputs : IInputActionCollection
                     ""processors"": """",
                     ""interactions"": """",
                     ""bindings"": []
-                },
-                {
-                    ""name"": ""Sprint"",
-                    ""id"": ""1d8601d1-425c-43ba-8291-3648e8814900"",
-                    ""expectedControlLayout"": ""Button"",
-                    ""continuous"": false,
-                    ""passThrough"": false,
-                    ""initialStateCheck"": true,
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""bindings"": []
                 }
             ],
             ""bindings"": [
@@ -102,7 +91,7 @@ public class MasterInputs : IInputActionCollection
                 {
                     ""name"": ""wasd"",
                     ""id"": ""57676225-6e04-4555-83ee-a2934646fafa"",
-                    ""path"": ""2DVector(normalize=false)"",
+                    ""path"": ""2DVector"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -185,18 +174,6 @@ public class MasterInputs : IInputActionCollection
                 },
                 {
                     ""name"": """",
-                    ""id"": ""b4f228c6-0df6-4d2e-83ef-955acd629bd4"",
-                    ""path"": ""<Keyboard>/leftShift"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Sprint"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false,
-                    ""modifiers"": """"
-                },
-                {
-                    ""name"": """",
                     ""id"": ""80d5f463-2abd-4907-8c42-3171107d0f6a"",
                     ""path"": ""<Mouse>/delta"",
                     ""interactions"": """",
@@ -219,46 +196,55 @@ public class MasterInputs : IInputActionCollection
         m_Character_Fire = m_Character.GetAction("Fire");
         m_Character_AltFire = m_Character.GetAction("AltFire");
         m_Character_Look = m_Character.GetAction("Look");
-        m_Character_Sprint = m_Character.GetAction("Sprint");
     }
+
     ~MasterInputs()
     {
         UnityEngine.Object.Destroy(asset);
     }
+
     public InputBinding? bindingMask
     {
         get => asset.bindingMask;
         set => asset.bindingMask = value;
     }
+
     public ReadOnlyArray<InputDevice>? devices
     {
         get => asset.devices;
         set => asset.devices = value;
     }
+
     public ReadOnlyArray<InputControlScheme> controlSchemes
     {
         get => asset.controlSchemes;
     }
+
     public bool Contains(InputAction action)
     {
         return asset.Contains(action);
     }
+
     public IEnumerator<InputAction> GetEnumerator()
     {
         return asset.GetEnumerator();
     }
+
     IEnumerator IEnumerable.GetEnumerator()
     {
         return GetEnumerator();
     }
+
     public void Enable()
     {
         asset.Enable();
     }
+
     public void Disable()
     {
         asset.Disable();
     }
+
     // Character
     private InputActionMap m_Character;
     private ICharacterActions m_CharacterActionsCallbackInterface;
@@ -267,7 +253,6 @@ public class MasterInputs : IInputActionCollection
     private InputAction m_Character_Fire;
     private InputAction m_Character_AltFire;
     private InputAction m_Character_Look;
-    private InputAction m_Character_Sprint;
     public struct CharacterActions
     {
         private MasterInputs m_Wrapper;
@@ -277,7 +262,6 @@ public class MasterInputs : IInputActionCollection
         public InputAction @Fire { get { return m_Wrapper.m_Character_Fire; } }
         public InputAction @AltFire { get { return m_Wrapper.m_Character_AltFire; } }
         public InputAction @Look { get { return m_Wrapper.m_Character_Look; } }
-        public InputAction @Sprint { get { return m_Wrapper.m_Character_Sprint; } }
         public InputActionMap Get() { return m_Wrapper.m_Character; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -290,44 +274,38 @@ public class MasterInputs : IInputActionCollection
             {
                 Jump.started -= m_Wrapper.m_CharacterActionsCallbackInterface.OnJump;
                 Jump.performed -= m_Wrapper.m_CharacterActionsCallbackInterface.OnJump;
-                Jump.cancelled -= m_Wrapper.m_CharacterActionsCallbackInterface.OnJump;
+                Jump.canceled -= m_Wrapper.m_CharacterActionsCallbackInterface.OnJump;
                 Movement.started -= m_Wrapper.m_CharacterActionsCallbackInterface.OnMovement;
                 Movement.performed -= m_Wrapper.m_CharacterActionsCallbackInterface.OnMovement;
-                Movement.cancelled -= m_Wrapper.m_CharacterActionsCallbackInterface.OnMovement;
+                Movement.canceled -= m_Wrapper.m_CharacterActionsCallbackInterface.OnMovement;
                 Fire.started -= m_Wrapper.m_CharacterActionsCallbackInterface.OnFire;
                 Fire.performed -= m_Wrapper.m_CharacterActionsCallbackInterface.OnFire;
-                Fire.cancelled -= m_Wrapper.m_CharacterActionsCallbackInterface.OnFire;
+                Fire.canceled -= m_Wrapper.m_CharacterActionsCallbackInterface.OnFire;
                 AltFire.started -= m_Wrapper.m_CharacterActionsCallbackInterface.OnAltFire;
                 AltFire.performed -= m_Wrapper.m_CharacterActionsCallbackInterface.OnAltFire;
-                AltFire.cancelled -= m_Wrapper.m_CharacterActionsCallbackInterface.OnAltFire;
+                AltFire.canceled -= m_Wrapper.m_CharacterActionsCallbackInterface.OnAltFire;
                 Look.started -= m_Wrapper.m_CharacterActionsCallbackInterface.OnLook;
                 Look.performed -= m_Wrapper.m_CharacterActionsCallbackInterface.OnLook;
-                Look.cancelled -= m_Wrapper.m_CharacterActionsCallbackInterface.OnLook;
-                Sprint.started -= m_Wrapper.m_CharacterActionsCallbackInterface.OnSprint;
-                Sprint.performed -= m_Wrapper.m_CharacterActionsCallbackInterface.OnSprint;
-                Sprint.cancelled -= m_Wrapper.m_CharacterActionsCallbackInterface.OnSprint;
+                Look.canceled -= m_Wrapper.m_CharacterActionsCallbackInterface.OnLook;
             }
             m_Wrapper.m_CharacterActionsCallbackInterface = instance;
             if (instance != null)
             {
                 Jump.started += instance.OnJump;
                 Jump.performed += instance.OnJump;
-                Jump.cancelled += instance.OnJump;
+                Jump.canceled += instance.OnJump;
                 Movement.started += instance.OnMovement;
                 Movement.performed += instance.OnMovement;
-                Movement.cancelled += instance.OnMovement;
+                Movement.canceled += instance.OnMovement;
                 Fire.started += instance.OnFire;
                 Fire.performed += instance.OnFire;
-                Fire.cancelled += instance.OnFire;
+                Fire.canceled += instance.OnFire;
                 AltFire.started += instance.OnAltFire;
                 AltFire.performed += instance.OnAltFire;
-                AltFire.cancelled += instance.OnAltFire;
+                AltFire.canceled += instance.OnAltFire;
                 Look.started += instance.OnLook;
                 Look.performed += instance.OnLook;
-                Look.cancelled += instance.OnLook;
-                Sprint.started += instance.OnSprint;
-                Sprint.performed += instance.OnSprint;
-                Sprint.cancelled += instance.OnSprint;
+                Look.canceled += instance.OnLook;
             }
         }
     }
@@ -345,6 +323,5 @@ public class MasterInputs : IInputActionCollection
         void OnFire(InputAction.CallbackContext context);
         void OnAltFire(InputAction.CallbackContext context);
         void OnLook(InputAction.CallbackContext context);
-        void OnSprint(InputAction.CallbackContext context);
     }
 }

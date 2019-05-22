@@ -5,7 +5,7 @@ public class BillboardObject : MonoBehaviour
 	Transform PlayerTransform = null;
 	private void Start()
 	{
-		PlayerTransform = FindObjectOfType<Character>().transform;
+		PlayerTransform = FindObjectOfType<PlayerController>().transform;
 	}
 	void FixedUpdate()
     {

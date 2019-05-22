@@ -2,8 +2,6 @@
 
 public class Projectile : MonoBehaviour
 {
-	DamageType TypeOfDamage = null;
-
 	[SerializeField]
     float LifeTime = 10.0f;
     float CurrLifeTime;
@@ -17,7 +15,7 @@ public class Projectile : MonoBehaviour
     Vector3 Direction;
     Collider Body;
     TrailRenderer Trail;
-	GameObject Shooter = null;
+	Weapon MyWeapon = null;
 
 	public delegate void ProjectileEvent(GameObject obj);
 	public delegate void ProjectileReturnEvent(Projectile obj);
@@ -30,7 +28,6 @@ public class Projectile : MonoBehaviour
         Body = GetComponent<Collider>();
 		Body.enabled = false;
         Trail = GetComponentInChildren<TrailRenderer>();
-		TypeOfDamage = GetComponent<DamageType>();
     }
 
     void Update()
@@ -43,9 +40,9 @@ public class Projectile : MonoBehaviour
         }
     }
 
-    public void Setup(GameObject shooter, Vector3 direction, float speed = 10.0f, float critPercent = 0.0f)
+    public void Setup(Weapon owner, Vector3 direction, float speed = 10.0f, float critPercent = 0.0f)
     {
-		Shooter = shooter;
+		MyWeapon = owner;
         Direction = direction;
         Speed = speed;
 		CritPercent = critPercent;
@@ -58,12 +55,12 @@ public class Projectile : MonoBehaviour
 	private void OnTriggerEnter(Collider collider)
 	{
 		HealthSystem HS = collider.gameObject.GetComponent<HealthSystem>();
-		if(collider.gameObject != Shooter)
+		if(collider.gameObject != MyWeapon.Owner)
 		{
 			if(HS)
 			{
 				bool crit = Random.Range(0.01f,1) <= CritPercent;
-				HS.ModifyHealth(Damage, TypeOfDamage, transform.position, crit);
+				HS.ModifyHealth(Damage, MyWeapon.DamageTypes, transform.position, crit);
 			}
 			Debug.Log(collider.gameObject);
 			ProjectileHit(collider.gameObject);

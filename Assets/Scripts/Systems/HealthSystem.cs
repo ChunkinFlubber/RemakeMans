@@ -1,16 +1,13 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-struct ResistanceValue
+[System.Serializable]
+public struct ResistanceValue
 {
+	[SerializeField]
 	public DamageType Type;
-	public float RValue;
-
-	public ResistanceValue(DamageType type, float rValue)
-	{
-		Type = type;
-		RValue = rValue;
-	}
+	[SerializeField]
+	public float ResistValue;
 }
 
 public class HealthSystem : MonoBehaviour
@@ -28,6 +25,7 @@ public class HealthSystem : MonoBehaviour
 	ResistanceValue[] StartingResistanceValues = null;
 
 	Dictionary<DamageType,float> Resistances = null;
+	PopUpUIManager PopUpManager = null;
 
 	public delegate void HealthEvent(float change);
     public HealthEvent OnHealthChange = delegate{};
@@ -36,13 +34,19 @@ public class HealthSystem : MonoBehaviour
     public HealthEvent OnHealthChangePct = delegate{};
     public HealthEvent OnDeath = delegate{};
 
-	private void Awake()
+	private void Start()
 	{
+		if (StartingResistanceValues == null)
+		{
+			Resistances = new Dictionary<DamageType, float>();
+			return;
+		}
 		Resistances = new Dictionary<DamageType, float>(StartingResistanceValues.Length);
 		foreach (ResistanceValue resistanceValues in StartingResistanceValues)
 		{
-			Resistances.Add(resistanceValues.Type, resistanceValues.RValue);
+			Resistances.Add(resistanceValues.Type, resistanceValues.ResistValue);
 		}
+		PopUpManager = PopUpUIManager.Instance;
 	}
 
 	void OnEnable()
@@ -72,14 +76,24 @@ public class HealthSystem : MonoBehaviour
 		}
     }
 
-	public void ModifyHealth(int amount, DamageType type, Vector3 position, bool crit)
+	public void ModifyHealth(int amount, DamageType[] types, Vector3 position, bool crit)
 	{
-		amount = (int)Mathf.Ceil((1.0f - Resistances[type]) * amount);
+		foreach (DamageType type in types)
+		{
+			//TODO: change how amount is used
+			if (Resistances.ContainsKey(type))
+			{
+				amount = (int)Mathf.Ceil((1.0f - Resistances[type]) * amount);
+			}
 
-		ModifyHealth(amount);
+			ModifyHealth(amount);
 
-		DamagePopUp dp = PopUpUIManager.Instance.GetDamagePopUp();
-		dp.transform.position = position;
-		dp.SetDamage(crit, amount, type?.DamageColor);
+			if(PopUpManager)
+			{
+				DamagePopUp dp = PopUpManager.GetDamagePopUp();
+				dp.transform.position = position;
+				dp.SetDamage(crit, amount, type?.DamageColor);
+			}
+		}
 	}
 }

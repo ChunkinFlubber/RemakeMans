@@ -1,15 +1,15 @@
-﻿using System;
-using UnityEngine;
-using UnityEngine.Experimental.Input;
+﻿using UnityEngine;
+using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(CharacterController))]
 public class CharacterMovementSystem : MonoBehaviour
 {
     [SerializeField]
     public CharacterMovementSettings MovementData;
-    MasterInputs Input;
+
     CharacterController Controller;
     Camera Cam;
+
     [SerializeField]
     public Transform GroundChecker = null;
     bool isGrounded = false;
@@ -26,30 +26,14 @@ public class CharacterMovementSystem : MonoBehaviour
     public MutationEvent MutateMoveSpeed = delegate{};
     public MutationEvent MutateJumpHeight = delegate{};
 
-    public void Init(MasterInputs input, CharacterController controller, Camera cam)
+    private void Start()
     {
-        Input = input;
-        Controller = controller;
-        Cam = cam;
+        Controller = GetComponent<CharacterController>();
+        Cam = GetComponentInChildren<Camera>();
 
         MovementData.Setup();
 
         MovementData.Velocity = Vector3.zero;
-
-        SetupInput();
-    }
-
-    private void SetupInput()
-    {
-        Input.Character.Movement.Enable();
-        Input.Character.Movement.performed += MoveInput;
-        Input.Character.Movement.cancelled += MoveInput;
-
-        Input.Character.Jump.Enable();
-        Input.Character.Jump.performed += Jump;
-
-        Input.Character.Look.Enable();
-        Input.Character.Look.performed += LookAround;
     }
 
     private void Update()
@@ -95,6 +79,7 @@ public class CharacterMovementSystem : MonoBehaviour
         }
     }
 
+	//InputSystem Functions: Used for player controls
     public void LookAround(InputAction.CallbackContext context)
     {
         Vector2 delta = context.ReadValue<Vector2>();
@@ -124,7 +109,27 @@ public class CharacterMovementSystem : MonoBehaviour
         MovementData.InputMoveVector.z = axis.y;
     }
 
-    public void AddMoveVector(Vector3 movement)
+	//Move Functions: Used for AI players
+	public void Jump()
+	{
+		if ((CheckGorund() && MovementData.Velocity.y <= 0.0f) || (CurrentJumpCount < MovementData.JumpCount - 1))
+		{
+			float jumpHeight = MovementData.JumpHeight;
+			MovementData.Velocity.y = Mathf.Sqrt(jumpHeight * -2f * MovementData.Gravity);
+			Jumped();
+			isGrounded = false;
+			++CurrentJumpCount;
+		}
+	}
+
+	public void MoveInput(Vector2 axis)
+	{
+		MovementData.InputMoveVector.x = axis.x;
+		MovementData.InputMoveVector.z = axis.y;
+	}
+
+	//TODO: Make this function an Impulse or AddVelocity
+	public void AddMoveVector(Vector3 movement)
     {
         MovementData.InputMoveVector = movement;
     }
@@ -181,12 +186,6 @@ public class CharacterMovementSystem : MonoBehaviour
 
     private void OnDestroy()
     {
-        Input.Character.Movement.performed -= MoveInput;
-        Input.Character.Movement.cancelled -= MoveInput;
-        Input.Character.Jump.performed -= Jump;
-        Input.Character.Look.performed -= LookAround;
-        Input.Character.Movement.Disable();
-        Input.Character.Look.Disable();
-        Input.Character.Jump.Disable();
+        
     }
 }

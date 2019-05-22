@@ -9,10 +9,10 @@ public class MutationSystem : MonoBehaviour
     Dictionary<Type, Mutation> Mutations;
     public int NumOfMutations {get { return Mutations.Count; } private set { NumOfMutations = value; } }
 
-    public Character MyCharacter { get; private set; }
+    public PlayerController MyCharacter { get; private set; }
     public CharacterMovementSystem MoveSystem { get; private set; }
     public LevelSystem Levels { get; private set; }
-    public Weapon WeapSys { get; private set; }
+    public WeaponSlot WeapSys { get; private set; }
 
     void Start()
     {
@@ -20,10 +20,10 @@ public class MutationSystem : MonoBehaviour
         PickUpDetector.radius = 1.25f;
         PickUpDetector.isTrigger = true;
 
-        MyCharacter = GetComponent<Character>();
+        MyCharacter = GetComponent<PlayerController>();
         MoveSystem = GetComponent<CharacterMovementSystem>();
         Levels = GetComponent<LevelSystem>();
-        WeapSys = GetComponent<Weapon>();
+        WeapSys = GetComponent<WeaponSlot>();
 
         Mutations = new Dictionary<Type, Mutation>();
     }
