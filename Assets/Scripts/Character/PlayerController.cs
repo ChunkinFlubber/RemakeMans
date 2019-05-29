@@ -2,14 +2,14 @@
 
 [RequireComponent(typeof(CharacterMovementSystem))]
 [RequireComponent(typeof(LevelSystem))]
-[RequireComponent(typeof(MutationSystem))]
+[RequireComponent(typeof(StatsSystem))]
 [RequireComponent(typeof(WeaponSlot))]
 public class PlayerController : MonoBehaviour
 {
     MasterInputs InputMan;
     CharacterMovementSystem MovementSys;
     LevelSystem LevelSys;
-    MutationSystem MutSys;
+	StatsSystem StatsSys;
     WeaponSlot WeaponSlot;
 
     void Awake()
@@ -20,7 +20,7 @@ public class PlayerController : MonoBehaviour
 
         LevelSys = GetComponent<LevelSystem>();
 
-        MutSys = GetComponent<MutationSystem>();
+        StatsSys = GetComponent<StatsSystem>();
 
         WeaponSlot = GetComponent<WeaponSlot>();
     }

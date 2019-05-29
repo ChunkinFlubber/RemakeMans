@@ -15,11 +15,11 @@ public class DamagePopUp : MonoBehaviour
 
 	public DamagePopUpEvent DestroyTime = delegate { };
 
-	public void SetDamage(bool isCrit = false, int amount = 10, Color? color = null)
+	public void SetDamage(bool isCrit = false, float amount = 10, Color? color = null)
 	{
 		gameObject.SetActive(true);
 
-		TextMesh.text = amount.ToString();
+		TextMesh.text = amount.ToString("F0");
 		if (!isCrit)
 		{
 			TextMesh.color = color ?? Color.white;

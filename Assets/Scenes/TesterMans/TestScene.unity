@@ -121,6 +121,24 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &168271034 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2238118093379830756, guid: 6061821d8cdc815479e3fd36ef14a8cd,
+    type: 3}
+  m_PrefabInstance: {fileID: 2238118093562909815}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &168271040
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 168271034}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40c608c35090c204ea20d07f5b8d4be6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &316802499
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -610,7 +628,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26ec7d8953629624ba328a89de99992b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DamageTypes: []
+  DamageTypes:
+  - {fileID: 11400000, guid: c8cf698fbec0ef9449b55f657d957b9b, type: 2}
 --- !u!1001 &2238118093562909815
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -767,7 +786,7 @@ PrefabInstance:
         type: 3}
       propertyPath: DamageTypes.Array.data[0]
       value: 
-      objectReference: {fileID: 11400000, guid: a91d20a6b3d836c48a9e16d75d357fb7,
+      objectReference: {fileID: 11400000, guid: ef0b61643fe465741b924aa7922f0748,
         type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8c6e7489f07795c4f8726abd5e069f09, type: 3}

@@ -14,10 +14,26 @@ public class Weapon : MonoBehaviour
 	[SerializeField]
 	GameObject PhysicsBodys = null;
 
-	[Header("Weapon Stats")]
+	[Header("Weapon Base Stats")]
 	[SerializeField]
-	private float _ROF = 1.35f;
-	public float ROF { get => _ROF; set { _ROF = value; RoundsDelta = 1 / _ROF; } }
+	protected float BaseDamage = 10.0f;
+	protected float _Damage = 0.0f;
+	public float Damage { get => _Damage; protected set { _Damage = value; } }
+	[SerializeField]
+	private float BaseROF = 1.35f;
+	private float _ROF;
+	public float ROF
+	{
+		get
+		{
+			return _ROF;
+		}
+		set
+		{
+			_ROF = value;
+			RoundsDelta = 1 / _ROF;
+		}
+	}
 	[SerializeField]
     float ProjectileSpeed = 30.0f;
 	[SerializeField]
@@ -28,13 +44,15 @@ public class Weapon : MonoBehaviour
 	public FireEvent Fired = delegate { };
 
 	public GameObject Owner { get; private set; }
+	StatsSystem OwnerStats = null;
 	bool isFiring = false;
 	float RoundsDelta = 0;
 	float CurrentDelta = 0;
 
 	private void Start()
 	{
-		RoundsDelta = 1 / ROF;
+		Damage = BaseDamage;
+		ROF = BaseROF;
 		CurrentDelta = RoundsDelta + 1f;
 		if(ProPool == null)
 		{
@@ -68,7 +86,7 @@ public class Weapon : MonoBehaviour
 		projectile.transform.parent = null;
 		projectile.transform.position = MuzzleTransform.position;
 		projectile.transform.rotation = MuzzleTransform.rotation;
-		projectile.Setup(this, MuzzleTransform.forward, ProjectileSpeed);
+		projectile.Setup(this, MuzzleTransform.forward, Damage, ProjectileSpeed);
 		projectile.ProjectileReturn += ReturnProjectile;
 		return projectile;
 	}
@@ -82,6 +100,12 @@ public class Weapon : MonoBehaviour
 	public void PickedUp(GameObject owner)
 	{
 		Owner = owner;
+		OwnerStats = Owner.GetComponent<StatsSystem>();
+		if(OwnerStats)
+		{
+			OwnerStats.StatusEffectEvent += StatsChange;
+			StatsCheck();
+		}
 		PhysicsBodys.SetActive(false);
 		RBody.isKinematic = true;
 		Trigger.enabled = false;
@@ -90,10 +114,35 @@ public class Weapon : MonoBehaviour
 	public void Dropped()
 	{
 		Owner = null;
+		if (OwnerStats)
+		{
+			OwnerStats.StatusEffectEvent -= StatsChange;
+			StatsCheck();
+		}
 		RBody.isKinematic = false;
 		PhysicsBodys.SetActive(true);
 		//TODO: Delay trigger reenabling
 		Trigger.enabled = true;
+	}
+
+	public void StatsChange(StatusEffect effect)
+	{
+		if(effect.isEffector && effect.EffectedStat.GetType() == typeof(ROFStat))
+		{
+			StatsCheck();
+		}
+	}
+
+	public void StatsCheck()
+	{
+		if(OwnerStats)
+		{
+			ROF = (OwnerStats.GetStat<ROFStat>() + 1) * BaseROF;
+		}
+		else
+		{
+			ROF = BaseROF;
+		}
 	}
 
 	private void OnTriggerEnter(Collider other)

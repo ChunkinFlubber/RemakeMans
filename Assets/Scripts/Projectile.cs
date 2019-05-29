@@ -6,7 +6,7 @@ public class Projectile : MonoBehaviour
     float LifeTime = 10.0f;
     float CurrLifeTime;
 	[SerializeField]
-	int Damage = 10;
+	float Damage = 10;
 	[SerializeField]
 	float CritMultiplier = 2.0f;
 	float CritPercent = 0.0f;
@@ -40,10 +40,11 @@ public class Projectile : MonoBehaviour
         }
     }
 
-    public void Setup(Weapon owner, Vector3 direction, float speed = 10.0f, float critPercent = 0.0f)
+    public void Setup(Weapon owner, Vector3 direction, float damage, float speed = 10.0f, float critPercent = 0.0f)
     {
 		MyWeapon = owner;
         Direction = direction;
+		Damage = damage;
         Speed = speed;
 		CritPercent = critPercent;
         CurrLifeTime = 0;
@@ -54,15 +55,25 @@ public class Projectile : MonoBehaviour
 
 	private void OnTriggerEnter(Collider collider)
 	{
-		HealthSystem HS = collider.gameObject.GetComponent<HealthSystem>();
 		if(collider.gameObject != MyWeapon.Owner)
 		{
+			HealthSystem HS = collider.gameObject.GetComponent<HealthSystem>();
+			StatsSystem SS = collider.gameObject.GetComponent<StatsSystem>();
 			if(HS)
 			{
-				bool crit = Random.Range(0.01f,1) <= CritPercent;
-				HS.ModifyHealth(Damage, MyWeapon.DamageTypes, transform.position, crit);
+				bool isCrit = Random.Range(0.0f,1.0f) < CritPercent;
+				HS.ModifyHealth(Damage, MyWeapon.DamageTypes, transform.position, isCrit);
 			}
-			Debug.Log(collider.gameObject);
+			if(SS)
+			{
+				foreach (DamageType type in MyWeapon.DamageTypes)
+				{
+					if(type.Apply())
+					{
+						SS.AddStatusEffect(type.Effect);
+					}
+				}
+			}
 			ProjectileHit(collider.gameObject);
 			ProjectileReturn(this);
 		}
